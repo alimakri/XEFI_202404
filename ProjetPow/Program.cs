@@ -21,7 +21,7 @@ namespace ProjetPow
             //var tableau = saisie.Split('-');
 
             // Solution Regex
-            var pattern = @"(?<verb>\w+)-(?<Noun>\w+) +-(?<param1>\w+) +(?<val1>[\wéèçôê]+)";
+            var pattern = @"(?<verb>\w+)-(?<Noun>\w+)(?: +-(?<param>\w+) +(?<val>[\wéèçôê]+))*";
             Match match = Regex.Match(saisie, pattern);
 
             if (!match.Success)
@@ -34,8 +34,6 @@ namespace ProjetPow
             // Extraire les valeurs des groupes
             string strVerb = match.Groups["verb"].Value;
             string strNoun = match.Groups["Noun"].Value;
-            string param1 = match.Groups["param1"].Value;
-            string val1 = match.Groups["val1"].Value;
 
             VerbEnum verb = VerbEnum.None; NounEnum noun = NounEnum.None; CommandEnum command = CommandEnum.None;
             if (!Enum.TryParse<VerbEnum>(strVerb, out verb))
@@ -56,6 +54,15 @@ namespace ProjetPow
                     }
                     else
                     {
+                        var parameters = match.Groups["param"].Captures;
+                        var vals = match.Groups["val"].Captures;
+                        Console.WriteLine(verb);
+                        Console.WriteLine(noun);
+                        for ( int i=0; i < parameters.Count; i++ )
+                        {
+                            Console.WriteLine("{0}:{1}", parameters[i], vals[i] );
+
+                        }
                         Console.WriteLine("Execution de la commande...");
                     }
                 }
