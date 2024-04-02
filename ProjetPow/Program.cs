@@ -16,6 +16,8 @@ namespace ProjetPow
         {
             Console.Write("Tapez votre commande : ");
             var saisie = Console.ReadLine();
+            var commandLine = new CommandLine(saisie);
+            commandLine.Execute();
 
             // Solution Split
             //var tableau = saisie.Split('-');
