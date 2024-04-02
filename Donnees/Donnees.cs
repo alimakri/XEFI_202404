@@ -16,13 +16,32 @@ namespace Donnees
             switch (command.LaCommande)
             {
                 case CommandEnum.Get_Product:
-                    command.LesProduits = Get_Product();
-
+                    command.LesProduits = Get_Product(command);
+                    break;
+                case CommandEnum.Get_Cat:
+                    command.LesCats = Get_Cat(command);
                     break;
             }
         }
-
-        private static List<Produit> Get_Product()
+        private static List<string> Get_Cat(CommandLine command)
+        {
+            var liste = new List<string>();
+            var cnx = new SqlConnection();
+            cnx.ConnectionString = @"Data source=.\SQLEXPRESS;initial Catalog=AdventureWorks2017;Integrated security=true";
+            cnx.Open();
+            var cmd = new SqlCommand();
+            cmd.Connection = cnx;
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select Name from Production.ProductCategory";
+            var rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                liste.Add((string)rd["Name"]);
+            }
+            rd.Close();
+            return liste;
+        }
+        private static List<Produit> Get_Product(CommandLine command)
         {
             var liste = new List<Produit>();
             var cnx = new SqlConnection();
@@ -31,11 +50,18 @@ namespace Donnees
             var cmd = new SqlCommand();
             cmd.Connection = cnx;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select ProductID, Name, Color from Production.Product";
+            if (command.LesParametres.Contains("Cat"))
+                cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name
+                                    from Production.Product p
+                                    inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
+                                    inner join Production.Productcategory c on sc.ProductCategoryID = c.ProductCategoryID
+                                    where c.Name='{command.LesValeurs[0]}'";
+            else
+                cmd.CommandText = "select ProductID, Name, Color from Production.Product";
             var rd = cmd.ExecuteReader();
             while (rd.Read())
             {
-                liste.Add(new Produit { Id = (int)rd["ProductId"], Nom = (string)rd["Name"], Couleur = rd["Color"] as string});
+                liste.Add(new Produit { Id = (int)rd["ProductId"], Nom = (string)rd["Name"], Couleur = rd["Color"] as string });
             }
             rd.Close();
             return liste;

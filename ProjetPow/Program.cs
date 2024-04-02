@@ -13,23 +13,42 @@ namespace ProjetPow
     {
         static void Main(string[] args)
         {
-            Console.Write("Tapez votre commande : ");
-            var saisie = Console.ReadLine();
-            var commandLine = new CommandLine(saisie);
-            if (commandLine.MessageErreur == "")
+            while (true)
             {
-                Console.WriteLine("Execution de la commande...");
-                Bol.Execute(commandLine);
-                foreach(var produit in commandLine.LesProduits)
+                Console.Write("Tapez votre commande : ");
+                var saisie = Console.ReadLine();
+                var commandLine = new CommandLine(saisie);
+                if (commandLine.MessageErreur == "")
                 {
-                    Console.WriteLine(produit);
+                    Console.WriteLine("Execution de la commande...");
+                    Bol.Execute(commandLine);
+                    Affichage(commandLine);
+                }
+                else
+                {
+                    Console.WriteLine(commandLine.MessageErreur);
                 }
             }
-            else
-            {
-                Console.WriteLine(commandLine.MessageErreur);
-            }
             Console.ReadLine();
+        }
+
+        private static void Affichage(CommandLine commandLine)
+        {
+            switch (commandLine.LaCommande)
+            {
+                case CommandEnum.Get_Product:
+                    foreach (var produit in commandLine.LesProduits)
+                    {
+                        Console.WriteLine(produit);
+                    }
+                    break;
+                case CommandEnum.Get_Cat:
+                    foreach (var cat in commandLine.LesCats)
+                    {
+                        Console.WriteLine(cat);
+                    }
+                    break;
+            }
         }
     }
 }
