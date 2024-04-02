@@ -14,6 +14,7 @@ namespace JointureInterfaceMetier
     {
         public string MessageErreur = "";
         public CommandEnum LaCommande = CommandEnum.None;
+        public List<Produit> LesProduits;
         public CommandLine(string saisie)
         {
             // Solution Regex

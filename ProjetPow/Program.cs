@@ -20,6 +20,10 @@ namespace ProjetPow
             {
                 Console.WriteLine("Execution de la commande...");
                 Bol.Execute(commandLine);
+                foreach(var produit in commandLine.LesProduits)
+                {
+                    Console.WriteLine(produit);
+                }
             }
             else
             {

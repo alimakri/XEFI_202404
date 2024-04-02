@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JointureInterfaceMetier\JointureInterfaceMetier.csproj">
+    <ProjectReference Include="..\JointureInterfaceMetier\SOAInterfaceMetier.csproj">
       <Project>{0fc45615-67e2-46e4-933d-fc21df6b2c4d}</Project>
-      <Name>JointureInterfaceMetier</Name>
+      <Name>SOAInterfaceMetier</Name>
     </ProjectReference>
     <ProjectReference Include="..\Metier\Metier.csproj">
       <Project>{2712973b-77cc-4bee-bedb-732e5ddcffc6}</Project>

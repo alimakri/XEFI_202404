@@ -16,7 +16,8 @@ namespace Donnees
             switch (command.LaCommande)
             {
                 case CommandEnum.Get_Product:
-                    Get_Product();
+                    command.LesProduits = Get_Product();
+
                     break;
             }
         }
@@ -34,16 +35,10 @@ namespace Donnees
             var rd = cmd.ExecuteReader();
             while (rd.Read())
             {
-                liste.Add(new Produit { Id = (int)rd["ProductId"], Nom = (string)rd["Name"], Couleur = (string)rd["Color"] });
+                liste.Add(new Produit { Id = (int)rd["ProductId"], Nom = (string)rd["Name"], Couleur = rd["Color"] as string});
             }
             rd.Close();
             return liste;
         }
-    }
-    public class Produit
-    {
-        public int Id { get; set; }
-        public string Nom { get; set; }
-        public string Couleur { get; set; }
     }
 }

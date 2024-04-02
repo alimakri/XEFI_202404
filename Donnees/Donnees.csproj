@@ -45,9 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JointureInterfaceMetier\JointureInterfaceMetier.csproj">
+    <ProjectReference Include="..\JointureInterfaceMetier\SOAInterfaceMetier.csproj">
       <Project>{0fc45615-67e2-46e4-933d-fc21df6b2c4d}</Project>
-      <Name>JointureInterfaceMetier</Name>
+      <Name>SOAInterfaceMetier</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
