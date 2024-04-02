@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace JointureInterfaceMetier
 {
-    public enum VerbEnum { None, Get, Set, Clear }
+    public enum VerbEnum { None, Get, Set, Clear, Exit }
     public enum NounEnum { None, Product, Cat, Host }
-    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_host }
+    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host,
+        Exit_Host
+    }
     public class CommandLine
     {
+        public static Dictionary<string, string> ListeAlias = new Dictionary<string, string>();
         public string MessageErreur = "";
         public CommandEnum LaCommande = CommandEnum.None;
         public List<Produit> LesProduits;
@@ -20,10 +23,16 @@ namespace JointureInterfaceMetier
         public List<string> LesParametres = new List<string>();
         public List<string> LesValeurs = new List<string>();
 
+        public static void Init()
+        {
+            ListeAlias.Add("CLS", "Clear-Host");
+            ListeAlias.Add("EXIT", "Exit-Host");
+        }
         public CommandLine(string saisie)
         {
+            // Alias
             // Solution Regex
-            var pattern = @"(?<verb>\w+)-(?<Noun>\w+)(?: +-(?<param>\w+) +(?<val>[\wéèçôê]+))*";
+            var pattern = @"(?<verb>\w+)-(?<Noun>\w+)(?: +-(?<param>\w+) +""?(?<val>[\wéèçôê %]+)""?)*$";
             Match match = Regex.Match(saisie, pattern);
 
             if (!match.Success)

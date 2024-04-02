@@ -13,23 +13,39 @@ namespace ProjetPow
     {
         static void Main(string[] args)
         {
-            while (true)
+            bool continuer = true;
+            CommandLine.Init();
+            while (continuer)
             {
                 Console.Write("Tapez votre commande : ");
                 var saisie = Console.ReadLine();
+                if (CommandLine.ListeAlias.Keys.Contains(saisie.ToUpper()))
+                {
+                    saisie = CommandLine.ListeAlias[saisie.ToUpper()];
+                }
                 var commandLine = new CommandLine(saisie);
                 if (commandLine.MessageErreur == "")
                 {
-                    Console.WriteLine("Execution de la commande...");
-                    Bol.Execute(commandLine);
-                    Affichage(commandLine);
+                    switch (commandLine.LaCommande)
+                    {
+                        case CommandEnum.Get_Cat:
+                        case CommandEnum.Get_Product:
+                            Bol.Execute(commandLine);
+                            Affichage(commandLine);
+                            break;
+                        case CommandEnum.Clear_Host:
+                            Console.Clear();
+                            break;
+                        case CommandEnum.Exit_Host:
+                            continuer = false;
+                            break;
+                    }
                 }
                 else
                 {
                     Console.WriteLine(commandLine.MessageErreur);
                 }
             }
-            Console.ReadLine();
         }
 
         private static void Affichage(CommandLine commandLine)

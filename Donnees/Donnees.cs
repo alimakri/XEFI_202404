@@ -50,7 +50,19 @@ namespace Donnees
             var cmd = new SqlCommand();
             cmd.Connection = cnx;
             cmd.CommandType = CommandType.Text;
-            if (command.LesParametres.Contains("Cat"))
+            if (command.LesParametres.Contains("Cat") && command.LesParametres.Contains("Like"))
+            {
+                var catVal = command.LesValeurs[command.LesParametres.IndexOf("Cat")];
+                var likeVal = command.LesValeurs[command.LesParametres.IndexOf("Like")];
+                cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name
+                                    from Production.Product p
+                                    inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
+                                    inner join Production.Productcategory c on sc.ProductCategoryID = c.ProductCategoryID
+                                    where c.Name='{catVal}' and p.Name like '{likeVal}'";
+            }
+            else if (command.LesParametres.Contains("Like"))
+                cmd.CommandText = $@"select * from Production.Product where Name like '{command.LesValeurs[0]}'";
+            else if (command.LesParametres.Contains("Cat"))
                 cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name
                                     from Production.Product p
                                     inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
