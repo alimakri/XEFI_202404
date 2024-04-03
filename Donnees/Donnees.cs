@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
+// Get-TotalOrder -Year 2014
 //select Sum(d.OrderQty* d.UnitPrice), Year(h.OrderDate)
 //from Sales.SalesOrderDetail d
 //inner
