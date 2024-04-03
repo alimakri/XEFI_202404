@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace JointureInterfaceMetier
 {
-    public enum VerbEnum { None, Get, Set, Clear, Exit, New }
+    public enum VerbEnum { None, Get, Set, Clear, Exit, New, Update, Delete }
     public enum NounEnum { None, Product, Cat, Host, TotalOrder, Person }
-    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder, Get_Person, New_Product }
+    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder, Get_Person, New_Product, Update_Product, Delete_Product }
     public class CommandLine
     {
         public static Dictionary<string, string> ListeAlias = new Dictionary<string, string>();

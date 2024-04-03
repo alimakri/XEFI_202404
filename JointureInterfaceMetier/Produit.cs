@@ -11,9 +11,10 @@ namespace JointureInterfaceMetier
         public int Id { get; set; }
         public string Nom { get; set; }
         public string Couleur { get; set; }
+        public decimal Prix { get; set; }
         public override string ToString()
         {
-            return $"{Id}. {Nom} {Couleur}";
+            return $"{Id}. {Nom} {Couleur} {Prix}";
         }
     }
 }

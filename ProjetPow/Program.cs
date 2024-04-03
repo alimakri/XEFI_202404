@@ -18,7 +18,10 @@ namespace ProjetPow
             while (continuer)
             {
                 Console.Write("Tapez votre commande : ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 var saisie = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Gray;
+
 
                 // Alias
                 if (CommandLine.ListeAlias.Keys.Contains(saisie.ToUpper()))
@@ -38,6 +41,8 @@ namespace ProjetPow
                         case CommandEnum.Get_TotalOrder:
                         case CommandEnum.Get_Person:
                         case CommandEnum.New_Product:
+                        case CommandEnum.Update_Product:
+                        case CommandEnum.Delete_Product:
                             Bol.Execute(commandLine);
                             if (commandLine.MessageErreur == "")
                                 Affichage(commandLine);

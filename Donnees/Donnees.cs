@@ -27,13 +27,60 @@ namespace Donnees
                 case CommandEnum.New_Product:
                     command.LesEntiers = New_Product(command);
                     break;
+                case CommandEnum.Update_Product:
+                    command.LesEntiers = Update_Product(command);
+                    break;
+                case CommandEnum.Delete_Product:
+                    command.LesEntiers = Delete_Product(command);
+                    break;
             }
+        }
+        private static List<int> Delete_Product(CommandLine command)
+        {
+            var cmd = Connexion();
+            if (command.LesParametres.Contains("Id"))
+            {
+                var id = command.LesValeurs[command.LesParametres.IndexOf("Id")];
+                cmd.CommandText = $@"delete Production.Product where ProductId={id}";
+            }
+            int n = 0;
+            try
+            {
+                n = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                command.MessageErreur = ex.Message;
+            }
+            return new List<int> { n };
+        }
+
+        private static List<int> Update_Product(CommandLine command)
+        {
+            var cmd = Connexion();
+            if (command.LesParametres.Contains("Id") &&
+                command.LesParametres.Contains("Price"))
+            {
+                var id = command.LesValeurs[command.LesParametres.IndexOf("Id")];
+                var price = command.LesValeurs[command.LesParametres.IndexOf("Price")];
+                cmd.CommandText = $@"update Production.Product set ListPrice={price} where ProductId={id}";
+            }
+            int n = 0;
+            try
+            {
+                n = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                command.MessageErreur = ex.Message;
+            }
+            return new List<int> { n };
         }
 
         private static List<int> New_Product(CommandLine command)
         {
             var cmd = Connexion();
-            if (command.LesParametres.Contains("Name") && 
+            if (command.LesParametres.Contains("Name") &&
                 command.LesParametres.Contains("Price") &&
                 command.LesParametres.Contains("ProductNumber"))
             {
@@ -48,7 +95,7 @@ namespace Donnees
             {
                 n = cmd.ExecuteNonQuery();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 command.MessageErreur = ex.Message;
             }
@@ -106,27 +153,35 @@ namespace Donnees
             {
                 var catVal = command.LesValeurs[command.LesParametres.IndexOf("Cat")];
                 var likeVal = command.LesValeurs[command.LesParametres.IndexOf("Like")];
-                cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name
+                cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name, p.ListePrice
                                     from Production.Product p
                                     inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
                                     inner join Production.Productcategory c on sc.ProductCategoryID = c.ProductCategoryID
                                     where c.Name='{catVal}' and p.Name like '{likeVal}'";
             }
+            else if (command.LesParametres.Contains("Id"))
+                cmd.CommandText = $@"select * from Production.Product where ProductId={command.LesValeurs[0]}";
             else if (command.LesParametres.Contains("Like"))
                 cmd.CommandText = $@"select * from Production.Product where Name like '{command.LesValeurs[0]}'";
             else if (command.LesParametres.Contains("Cat"))
-                cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name
+                cmd.CommandText = $@"select ProductID, p.Name, Color, c.Name, p.ListePrice
                                     from Production.Product p
                                     inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
                                     inner join Production.Productcategory c on sc.ProductCategoryID = c.ProductCategoryID
                                     where c.Name='{command.LesValeurs[0]}'";
             else
-                cmd.CommandText = "select ProductID, Name, Color from Production.Product";
+                cmd.CommandText = "select ProductID, Name, Color, ListPrice from Production.Product";
             var rd = cmd.ExecuteReader();
             var liste = new List<Produit>();
             while (rd.Read())
             {
-                liste.Add(new Produit { Id = (int)rd["ProductId"], Nom = (string)rd["Name"], Couleur = rd["Color"] as string });
+                liste.Add(new Produit
+                {
+                    Id = (int)rd["ProductId"],
+                    Nom = (string)rd["Name"],
+                    Couleur = rd["Color"] as string,
+                    Prix = (decimal) rd["ListPrice"]
+                });
             }
             rd.Close();
             return liste;
