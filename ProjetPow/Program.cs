@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+// New-Product -Name Clavier -Price 22.15
 namespace ProjetPow
 {
     internal class Program
@@ -37,6 +38,7 @@ namespace ProjetPow
                         case CommandEnum.Get_Cat:
                         case CommandEnum.Get_Product:
                         case CommandEnum.Get_TotalOrder:
+                        case CommandEnum.Get_Person:
                             Bol.Execute(commandLine);
                             Affichage(commandLine);
                             break;
@@ -67,6 +69,12 @@ namespace ProjetPow
                     foreach (var produit in commandLine.LesProduits)
                     {
                         Console.WriteLine(produit);
+                    }
+                    break;
+                case CommandEnum.Get_Person:
+                    foreach (var personne in commandLine.LesPersonnes)
+                    {
+                        Console.WriteLine(personne);
                     }
                     break;
                 case CommandEnum.Get_Cat:

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace JointureInterfaceMetier
 {
     public enum VerbEnum { None, Get, Set, Clear, Exit }
-    public enum NounEnum { None, Product, Cat, Host, TotalOrder }
-    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder }
+    public enum NounEnum { None, Product, Cat, Host, TotalOrder, Person }
+    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder, Get_Person }
     public class CommandLine
     {
         public static Dictionary<string, string> ListeAlias = new Dictionary<string, string>();
@@ -18,6 +18,7 @@ namespace JointureInterfaceMetier
         public string MessageErreur = "";
         public CommandEnum LaCommande = CommandEnum.None;
         public List<Produit> LesProduits;
+        public List<Personne> LesPersonnes;
         public List<string> LesCats;
         public List<string> LesTotaux;
         public List<string> LesParametres = new List<string>();
@@ -36,7 +37,7 @@ namespace JointureInterfaceMetier
         {
             // Alias
             // Solution Regex
-            var pattern = @"(?<verb>\w+)-(?<Noun>\w+)(?: +-(?<param>\w+) +""?(?<val>[\wéèçôê %]+)""?)*$";
+            var pattern = @"(?<verb>\w+)-(?<Noun>\w+)(?: +-(?<param>\w+) +""?(?<val>[\wéèçôê %.]+)""?)*$";
             Match match = Regex.Match(saisie, pattern);
 
             // Check Regex
