@@ -1,14 +1,11 @@
 ﻿using JointureInterfaceMetier;
 using Metier;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-// New-Product -Name Clavier -Price 22.15
-// insert Production.product (Name, ListPrice) values('clavier',20.15)
+// Update-Product -Id 1018 -Price 3.60
+// update Product set ListPrice=3.60 where ProductId=1018
 namespace ProjetPow
 {
     internal class Program
@@ -40,8 +37,15 @@ namespace ProjetPow
                         case CommandEnum.Get_Product:
                         case CommandEnum.Get_TotalOrder:
                         case CommandEnum.Get_Person:
+                        case CommandEnum.New_Product:
                             Bol.Execute(commandLine);
-                            Affichage(commandLine);
+                            if (commandLine.MessageErreur == "")
+                                Affichage(commandLine);
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(commandLine.MessageErreur);
+                            }
                             break;
 
                         // Commande Console
@@ -58,6 +62,7 @@ namespace ProjetPow
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(commandLine.MessageErreur);
                 }
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 

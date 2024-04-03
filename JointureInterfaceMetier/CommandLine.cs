@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace JointureInterfaceMetier
 {
-    public enum VerbEnum { None, Get, Set, Clear, Exit }
+    public enum VerbEnum { None, Get, Set, Clear, Exit, New }
     public enum NounEnum { None, Product, Cat, Host, TotalOrder, Person }
-    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder, Get_Person }
+    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder, Get_Person, New_Product }
     public class CommandLine
     {
         public static Dictionary<string, string> ListeAlias = new Dictionary<string, string>();
@@ -19,6 +20,7 @@ namespace JointureInterfaceMetier
         public CommandEnum LaCommande = CommandEnum.None;
         public List<Produit> LesProduits;
         public List<Personne> LesPersonnes;
+        public List<int> LesEntiers;
         public List<string> LesCats;
         public List<string> LesTotaux;
         public List<string> LesParametres = new List<string>();
@@ -32,6 +34,7 @@ namespace JointureInterfaceMetier
 
             // Type Param
             ListeTypeParam.Add("Year", "int");
+            ListeTypeParam.Add("Price", "decimal");
         }
         public CommandLine(string saisie)
         {
@@ -80,6 +83,11 @@ namespace JointureInterfaceMetier
                 {
                     switch(ListeTypeParam[parametres[i].Value])
                     {
+                        case "decimal":
+                            var culture = CultureInfo.InvariantCulture;
+                            if (!decimal.TryParse(valeurs[i].Value, System.Globalization.NumberStyles.Currency, culture, out _))
+                                MessageErreur = $"Le paramètre {parametres[i].Value} doit être un décimal.";
+                            break;
                         case "int":
                             if (!int.TryParse(valeurs[i].Value, out _))
                                 MessageErreur = $"Le paramètre {parametres[i].Value} doit être un entier.";

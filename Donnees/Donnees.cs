@@ -1,4 +1,5 @@
 ﻿using JointureInterfaceMetier;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,7 +24,35 @@ namespace Donnees
                 case CommandEnum.Get_Person:
                     command.LesPersonnes = Get_Person(command);
                     break;
+                case CommandEnum.New_Product:
+                    command.LesEntiers = New_Product(command);
+                    break;
             }
+        }
+
+        private static List<int> New_Product(CommandLine command)
+        {
+            var cmd = Connexion();
+            if (command.LesParametres.Contains("Name") && 
+                command.LesParametres.Contains("Price") &&
+                command.LesParametres.Contains("ProductNumber"))
+            {
+                var name = command.LesValeurs[command.LesParametres.IndexOf("Name")];
+                var price = command.LesValeurs[command.LesParametres.IndexOf("Price")];
+                var pn = command.LesValeurs[command.LesParametres.IndexOf("ProductNumber")];
+                cmd.CommandText = $@"insert Production.product (Name, ListPrice, ProductNumber, SafetyStockLevel, ReorderPoint, StandardCost, DaysToManufacture, SellStartDate) 
+                                        values('{name}',{price}, '{pn}', 1, 1, 0, 0, getdate())";
+            }
+            int n = 0;
+            try
+            {
+                n = cmd.ExecuteNonQuery();
+            }
+            catch(Exception ex)
+            {
+                command.MessageErreur = ex.Message;
+            }
+            return new List<int> { n };
         }
 
         #region Get
@@ -41,11 +70,13 @@ namespace Donnees
         {
             var cmd = Connexion();
             if (command.LesParametres.Contains("Year"))
+            {
                 cmd.CommandText = @"select Sum(d.OrderQty * d.UnitPrice) total
                                 from Sales.SalesOrderDetail d
                                 inner join Sales.SalesOrderHeader h on d.SalesOrderID = h.SalesOrderID
                                 Group by Year(h.OrderDate)
                                 having Year(h.OrderDate)=2014";
+            }
             var rd = cmd.ExecuteReader();
             var liste = new List<string>();
             while (rd.Read())
@@ -129,5 +160,6 @@ namespace Donnees
             return liste;
         }
         #endregion
+
     }
 }
