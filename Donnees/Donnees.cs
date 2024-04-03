@@ -11,6 +11,12 @@ using System.Threading.Tasks;
 
 namespace Donnees
 {
+//    SELECT Person.Person.BusinessEntityID, Person.Person.FirstName, Person.Person.LastName
+//    FROM            Person.Address INNER JOIN
+//                         Person.BusinessEntityAddress ON Person.Address.AddressID = Person.BusinessEntityAddress.AddressID INNER JOIN
+//                         Person.BusinessEntity ON Person.BusinessEntityAddress.BusinessEntityID = Person.BusinessEntity.BusinessEntityID INNER JOIN
+//                         Person.Person ON Person.BusinessEntity.BusinessEntityID = Person.Person.BusinessEntityID
+//    WHERE        (Person.Address.City = N'Santa Cruz')
     public static class Dal
     {
         public static void Execute(CommandLine command)
