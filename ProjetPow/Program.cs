@@ -13,6 +13,7 @@ namespace ProjetPow
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             bool continuer = true;
             CommandLine.Init();
             while (continuer)
@@ -35,6 +36,7 @@ namespace ProjetPow
                         // Commande Data
                         case CommandEnum.Get_Cat:
                         case CommandEnum.Get_Product:
+                        case CommandEnum.Get_TotalOrder:
                             Bol.Execute(commandLine);
                             Affichage(commandLine);
                             break;
@@ -50,6 +52,7 @@ namespace ProjetPow
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(commandLine.MessageErreur);
                 }
             }
@@ -57,6 +60,7 @@ namespace ProjetPow
 
         private static void Affichage(CommandLine commandLine)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             switch (commandLine.LaCommande)
             {
                 case CommandEnum.Get_Product:
@@ -71,7 +75,14 @@ namespace ProjetPow
                         Console.WriteLine(cat);
                     }
                     break;
+                case CommandEnum.Get_TotalOrder:
+                    foreach (var total in commandLine.LesTotaux)
+                    {
+                        Console.WriteLine(double.Parse(total).ToString("C"));
+                    }
+                    break;
             }
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }

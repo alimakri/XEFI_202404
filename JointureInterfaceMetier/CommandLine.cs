@@ -9,24 +9,28 @@ using System.Threading.Tasks;
 namespace JointureInterfaceMetier
 {
     public enum VerbEnum { None, Get, Set, Clear, Exit }
-    public enum NounEnum { None, Product, Cat, Host }
-    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host,
-        Exit_Host
-    }
+    public enum NounEnum { None, Product, Cat, Host, TotalOrder }
+    public enum CommandEnum { None, Get_Product, Get_Cat, Clear_Host, Exit_Host, Get_TotalOrder }
     public class CommandLine
     {
         public static Dictionary<string, string> ListeAlias = new Dictionary<string, string>();
+        public static Dictionary<string, string> ListeTypeParam = new Dictionary<string, string>();
         public string MessageErreur = "";
         public CommandEnum LaCommande = CommandEnum.None;
         public List<Produit> LesProduits;
         public List<string> LesCats;
+        public List<string> LesTotaux;
         public List<string> LesParametres = new List<string>();
         public List<string> LesValeurs = new List<string>();
 
         public static void Init()
         {
+            // Alias
             ListeAlias.Add("CLS", "Clear-Host");
             ListeAlias.Add("EXIT", "Exit-Host");
+
+            // Type Param
+            ListeTypeParam.Add("Year", "int");
         }
         public CommandLine(string saisie)
         {
@@ -70,6 +74,21 @@ namespace JointureInterfaceMetier
             var valeurs = match.Groups["val"].Captures;
             for (int i = 0; i < parametres.Count; i++)
             {
+                // Check type 
+                if (ListeTypeParam.Keys.Contains(parametres[i].Value))
+                {
+                    switch(ListeTypeParam[parametres[i].Value])
+                    {
+                        case "int":
+                            if (!int.TryParse(valeurs[i].Value, out _))
+                                MessageErreur = $"Le paramètre {parametres[i].Value} doit être un entier.";
+                            break;
+                        case "date":
+                            if (!DateTime.TryParse(valeurs[i].Value, out _))
+                                MessageErreur = $"Le paramètre {parametres[i].Value} doit être une date.";
+                            break;
+                    }
+                }
                 LesParametres.Add(parametres[i].Value);
             }
             for (int i = 0; i < valeurs.Count; i++)

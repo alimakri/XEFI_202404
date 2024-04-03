@@ -31,7 +31,33 @@ namespace Donnees
                 case CommandEnum.Get_Cat:
                     command.LesCats = Get_Cat(command);
                     break;
+                case CommandEnum.Get_TotalOrder:
+                    command.LesTotaux = Get_TotalOrder(command);
+                    break;
             }
+        }
+        private static List<string> Get_TotalOrder(CommandLine command)
+        {
+            var liste = new List<string>();
+            var cnx = new SqlConnection();
+            cnx.ConnectionString = @"Data source=.\SQLEXPRESS;initial Catalog=AdventureWorks2017;Integrated security=true";
+            cnx.Open();
+            var cmd = new SqlCommand();
+            cmd.Connection = cnx;
+            cmd.CommandType = CommandType.Text;
+            if (command.LesParametres.Contains("Year"))
+                cmd.CommandText = @"select Sum(d.OrderQty * d.UnitPrice) total
+                                from Sales.SalesOrderDetail d
+                                inner join Sales.SalesOrderHeader h on d.SalesOrderID = h.SalesOrderID
+                                Group by Year(h.OrderDate)
+                                having Year(h.OrderDate)=2014";
+            var rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                liste.Add(rd["total"].ToString());
+            }
+            rd.Close();
+            return liste;
         }
         private static List<string> Get_Cat(CommandLine command)
         {
