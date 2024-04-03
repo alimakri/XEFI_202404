@@ -9,14 +9,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-// Get-TotalOrder -Year 2014
-//select Sum(d.OrderQty* d.UnitPrice), Year(h.OrderDate)
-//from Sales.SalesOrderDetail d
-//inner
-//join Sales.SalesOrderHeader h on d.SalesOrderID = h.SalesOrderID
-//Group by Year(h.OrderDate)
-//having Year(h.OrderDate)= 2014
-
 namespace Donnees
 {
     public static class Dal
