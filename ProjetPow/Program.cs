@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 // New-Product -Name Clavier -Price 22.15
+// insert Production.product (Name, ListPrice) values('clavier',20.15)
 namespace ProjetPow
 {
     internal class Program
