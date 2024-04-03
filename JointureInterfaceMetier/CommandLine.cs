@@ -35,6 +35,7 @@ namespace JointureInterfaceMetier
             var pattern = @"(?<verb>\w+)-(?<Noun>\w+)(?: +-(?<param>\w+) +""?(?<val>[\wéèçôê %]+)""?)*$";
             Match match = Regex.Match(saisie, pattern);
 
+            // Check Regex
             if (!match.Success)
             {
                 MessageErreur = "L'expression régulière ne fonctionne pas.";
@@ -45,23 +46,26 @@ namespace JointureInterfaceMetier
             string strVerb = match.Groups["verb"].Value;
             string strNoun = match.Groups["Noun"].Value;
 
+            // Check Verbe
             VerbEnum verb = VerbEnum.None; NounEnum noun = NounEnum.None;
             if (!Enum.TryParse<VerbEnum>(strVerb, out verb))
             {
                 MessageErreur = $"Le verbe {strVerb} n'existe pas !";
                 return;
             }
+            // Check Nom
             if (!Enum.TryParse<NounEnum>(strNoun, out noun))
             {
                 MessageErreur = $"Le nom {strNoun} n'existe pas !";
                 return;
             }
+            // Check Commande
             if (!Enum.TryParse<CommandEnum>($"{strVerb}_{strNoun}", out LaCommande))
             {
                 MessageErreur = $"La commande {strVerb}-{strNoun} n'existe pas !";
                 return;
             }
-
+            // Extraction des couples paramètres\valeurs
             var parametres = match.Groups["param"].Captures;
             var valeurs = match.Groups["val"].Captures;
             for (int i = 0; i < parametres.Count; i++)

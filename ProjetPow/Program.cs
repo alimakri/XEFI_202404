@@ -19,20 +19,27 @@ namespace ProjetPow
             {
                 Console.Write("Tapez votre commande : ");
                 var saisie = Console.ReadLine();
+
+                // Alias
                 if (CommandLine.ListeAlias.Keys.Contains(saisie.ToUpper()))
                 {
                     saisie = CommandLine.ListeAlias[saisie.ToUpper()];
                 }
+
+                // Construction de l'objet CommandLine (Check)
                 var commandLine = new CommandLine(saisie);
                 if (commandLine.MessageErreur == "")
                 {
                     switch (commandLine.LaCommande)
                     {
+                        // Commande Data
                         case CommandEnum.Get_Cat:
                         case CommandEnum.Get_Product:
                             Bol.Execute(commandLine);
                             Affichage(commandLine);
                             break;
+
+                        // Commande Console
                         case CommandEnum.Clear_Host:
                             Console.Clear();
                             break;
