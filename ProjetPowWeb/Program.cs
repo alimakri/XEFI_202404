@@ -10,6 +10,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddDbContext<TodoContext>(db => db.UseSqlServer(builder.Configuration.GetConnectionString("TodoConnection")), ServiceLifetime.Singleton);
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
@@ -37,7 +39,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Xefi}/{action=About2}/{id?}");
+    pattern: "{controller=Todoes}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

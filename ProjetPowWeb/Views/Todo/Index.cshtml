@@ -1,0 +1,18 @@
+﻿@model List<ProjetPowWeb.Models.Todo>
+<h2>Liste des todo</h2>
+<form method="post" action="/todo/index">
+    <a href="/todo/new" >Nouveau</a>
+    <table>
+        @foreach (var todo in Model)
+        {
+            var fait = todo.Fait ? "checked=checked" : "";
+            <tr>
+                <td><input name="id" type="hidden" value="@todo.Id"/></td>
+                <td><input name="fait" type="checkbox" @fait /></td>
+                <td><input name="name" type="text" value="@todo.Name" /></td>
+                <td><input name="save" type="submit" value="Enregistrer"/></td>
+            </tr>
+
+        }
+    </table>
+</form>
