@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Personne.cs" />
-    <Compile Include="Produit.cs" />
+    <Compile Include="Entites\Personne.cs" />
+    <Compile Include="Entites\Produit.cs" />
     <Compile Include="CommandLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
