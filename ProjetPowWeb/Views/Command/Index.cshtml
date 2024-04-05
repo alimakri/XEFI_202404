@@ -1,0 +1,33 @@
+﻿@using JointureInterfaceMetier
+<span>Commande : </span>
+
+<input id="saisie" type="text" name="saisie" />
+<input id="btn" type="button" value="Exécuter" />
+
+<p style="color:red">@ViewBag.MessageErreur</p>
+<div>
+    <ul id="liste">
+    </ul>
+</div>
+@section scripts {
+    <script>
+        $('#btn').click(function () {
+            var data = '{"Command": "' + $('#saisie').val() + '"}';
+            $.ajax({
+                url: "/api/commandLine/",
+                data: data,
+                contentType: "application/json",
+                method: "POST",
+                success: function (result) {
+                    $('#liste').empty();
+                    for (var j = 0; j < result.length; j++) {
+                        $('#liste').append('<li>' + result[j].nom + '</li>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Pas bon !');
+                }
+            });
+        });
+    </script>
+}
